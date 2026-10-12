@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Suno Lyric Sync — 歌詞自動同期</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Suno Lyric Sync</h1>
+      <p class="sub">ブラウザ内だけで AI 生成曲の歌詞を自動同期。サーバーも API も不要。</p>
+      <span id="deviceBadge" class="badge">実行環境: 判定中…</span>
+    </header>
+
+    <main>
+      <section class="panel input">
+        <h2>1. 音声</h2>
+        <div id="drop" class="drop">
+          <input type="file" id="audioFile" accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac" hidden />
+          <p><strong>ここに音声をドロップ</strong></p>
+          <p class="small">mp3 / m4a / wav / ogg（またはクリックして選択）</p>
+        </div>
+        <div id="audioInfo" class="info">未選択</div>
+        <audio id="player" controls preload="metadata"></audio>
+
+        <h2>2. 歌詞</h2>
+        <textarea id="lyrics" spellcheck="false" placeholder="[Verse]
+ここにSunoに入れた歌詞を貼り付け
+[Verse] のようにセクションタグを書くと出力にも残ります"></textarea>
+        <div class="row">
+          <input type="file" id="lyricsFile" accept=".txt,.lrc,.md" hidden />
+          <button id="loadLyrics" class="ghost">歌詞ファイル読込</button>
+          <button id="clearLyrics" class="ghost">クリア</button>
+        </div>
+
+        <h2>3. 設定</h2>
+        <div class="grid2">
+          <label>
+            言語
+            <select id="language">
+              <option value="auto">自動判定</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <label>
+            認識モデル
+            <select id="model">
+              <option value="base">base — 最速（約150MB）</option>
+              <option value="small">small — 最速（約250MB）</option>
+              <option value="medium" selected>medium — 推奨（約800MB / 精度が一段上）</option>
+              <option value="turbo">large-v3-turbo — 最良（約700MB〜）</option>
+            </select>
+          </label>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="useWebGPU" checked />
+          WebGPU を使う（無ければ WASM で自動フォールバック）
+        </label>
+
+        <div class="row">
+          <button id="run" class="primary">同期を実行</button>
+          <button id="cancel" class="ghost" disabled>中止</button>
+        </div>
+        <div id="status" class="status">待機中</div>
+        <div id="progressWrap" class="progress" hidden>
+          <div id="progressBar"></div>
+        </div>
+      </section>
+
+      <section class="panel output">
+        <div id="emptyState" class="empty">
+          <p>音声と歌詞を入れて「同期を実行」を押してください。</p>
+          <p class="small">処理はすべてこのブラウザの中だけで完結します（モデルの初回ダウンロードのみ通信）。</p>
+        </div>
+
+        <div id="result" hidden>
+          <div id="stats" class="stats"></div>
+
+          <details id="asrPanel" class="asrpanel">
+            <summary>ASR が実際に認識したテキスト（.debug.json の解析ログ）</summary>
+            <div id="asrDiagnosis" class="diagnosis"></div>
+            <div class="row">
+              <button id="adoptAsr" class="ghost">認識テキストを歌詞として採用（時刻は100%確定）</button>
+              <span class="small">Sunoが実際に歌った文言にずれた箇所を、テキストだけで直せます</span>
+            </div>
+            <pre id="asrText" class="asrtext"></pre>
+          </details>
+
+          <div class="row spread">
+            <div class="row">
+              <label class="check" style="margin:0">
+                <input type="checkbox" id="onlyUnmatched" /> 要確認的行だけ表示
+                <span id="unmatchedInfo" class="small"></span>
+              </label>
+            </div>
+            <div class="row">
+              <label class="small">全体オフセット
+                <input type="range" id="offset" min="-2000" max="2000" step="10" value="0" />
+                <output id="offsetValue">0 ms</output>
+              </label>
+            </div>
+            <div class="row">
+              <input id="title" placeholder="タイトル" />
+              <input id="artist" placeholder="アーティスト" />
+            </div>
+          </div>
+
+          <div id="lyricView" class="lyrics"></div>
+
+          <div class="row">
+            <label class="small">字幕設定
+              最低表示 <input id="srtMin" type="number" value="1.0" min="0.2" max="5" step="0.1" style="width:56px"> 秒
+              1行最大 <input id="srtMax" type="number" value="20" min="6" max="60" step="1" style="width:52px"> 文字
+            </label>
+          </div>
+
+          <div class="row">
+            <button id="expLrc" class="ghost">.lrc（行ごと・音楽プレイヤー）</button>
+            <button id="expEnhanced" class="ghost">.lrc（語ごと・カラオケ / MV）</button>
+            <button id="expTtml" class="ghost">.ttml（語ごと・Apple Music 等）</button>
+            <button id="expSrt" class="ghost">.srt（字幕・設定値を使う）</button>
+            <button id="expVtt" class="ghost">.vtt（WebVTT・設定値を使う）</button>
+            <button id="expJson" class="ghost">.json</button>
+            <button id="expDebug" class="ghost">.debug.json（解析ログ）</button>
+            <span id="editHint" class="small"></span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

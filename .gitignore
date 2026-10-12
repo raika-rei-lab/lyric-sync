@@ -1,0 +1,22 @@
+node_modules/
+dist/
+
+# ローカルキャッシュ・生成物
+.cache/
+out/
+
+# 解析ログ（.NOTICE: モデルのDLではない、実データ。含めない）
+*.debug.json
+*.lyrics.txt
+
+# テスト fixture（実患者の歌詞データを含むため、リポジトリには含めない）
+# 配置すると node test/exp-align.mjs / node test/diff-models.mjs が利用できます
+test/fixtures/
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*Zone.Identifier
