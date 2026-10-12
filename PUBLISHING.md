@@ -21,15 +21,21 @@
 
 ---
 
-## 手順 0：公開前に直す 3 箇所（重要）
+## 手順 0：公開前チェックリスト（重要）
 
-| # | ファイル | 変更内容 |
+本リポジトリでは次の修正を**すでに適用済み**です。下記の値を自分のものに置き換えてください。
+
+| # | ファイル | 適用済みの値 |
 | --- | --- | --- |
-| 1 | `LICENSE` | `Copyright (c) 2026 raika` → **あなたの名前／GitHub ハンドル** |
-| 2 | `CHANGELOG.md` | `OWNER/REPO` → `あなたのユーザー名/リポジトリ名`（3箇所） |
-| 3 | `CONTRIBUTING.md` | `OWNER/REPO` → `あなたのユーザー名/リポジトリ名`（2箇所） |
+| 1 | `LICENSE` | `Copyright (c) 2026 Raika` |
+| 2 | `CHANGELOG.md` | `github.com/raika-rei-lab/lyric-sync`（3箇所） |
+| 3 | `CONTRIBUTING.md` | `github.com/raika-rei-lab/lyric-sync`（2箇所） |
 
-GitHub 上に自動生成されるリンクが `OWNER/REPO` のままになると、切れないリンクになります。
+公開前に確認すべきこと:
+
+- [ ] 著作権者名を自分のものに変更したか
+- [ ] リポジトリ名（`lyric-sync`）が実際のものになっているか
+- [ ] `git log` の作者名が自分の GitHub アカウントになっているか
 
 ---
 
@@ -40,7 +46,7 @@ GitHub 上に自動生成されるリンクが `OWNER/REPO` のままになる�
 Settings → General → Danger Zone から Public に切り替えられます（履歴は消えません）。
 
 1. <https://github.com/new> を開く
-2. **Repository name**: `suno-lyric-sync`（または任意の名前。命名については「補足」参照）
+2. **Repository name**: `lyric-sync`（または任意の名前。命名については末尾の「補足」を参照）
 3. **Private** を選択（確認後に Public に変更）
 4. **Add a README file / .gitignore / license はすべてチェックしない**
    （既にローカルに存在するため。チェックすると push が衝突します）
@@ -65,7 +71,7 @@ Settings → General → Danger Zone から Public に切り替えられます�
 ```bash
 cd <このディレクトリ>
 
-git remote add origin https://github.com/<あなたのユーザー名>/<リポジトリ名>.git
+git remote add origin https://github.com/raika-rei-lab/lyric-sync.git
 git push -u origin main
 ```
 
@@ -81,7 +87,7 @@ push 時にパスワードを問かれたら、GitHub のパスワードでは�
 ```bash
 cd <このディレクトリ>
 
-git remote add origin git@github.com:<あなたのユーザー名>/<リポジトリ名>.git
+git remote add origin git@github.com:raika-rei-lab/lyric-sync.git
 git push -u origin main
 ```
 
@@ -143,11 +149,11 @@ Vite なのでビルド成果物（`dist/`）を Pages に配置するだけで�
 # --- リポジトリ作成（gh を使う場合：最短） ---
 # gh が未インストールなら: https://cli.github.com/ を参照
 gh auth login
-gh repo create suno-lyric-sync --public --source=. --push --description "ブラウザ完結の歌詞同期ツール"
+gh repo create lyric-sync --public --source=. --push --description "ブラウザ完結の歌詞同期ツール"
 
 # --- Web で作成したリポジトリに push する場合 ---
 cd <このディレクトリ>
-git remote add origin https://github.com/<ユーザー名>/suno-lyric-sync.git
+git remote add origin https://github.com/raika-rei-lab/lyric-sync.git
 git push -u origin main
 
 # --- 確認 ---
