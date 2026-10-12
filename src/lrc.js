@@ -33,7 +33,7 @@ export function toPlainLRC(result, meta = {}) {
   if (meta.title) out.push(`[ti:${meta.title}]`);
   if (meta.artist) out.push(`[ar:${meta.artist}]`);
   if (meta.album) out.push(`[al:${meta.album}]`);
-  out.push('[re:suno-lyric-sync]');
+  out.push('[re:lyric-sync]');
   if (result.duration) out.push(`[length:${fmt(result.duration)}]`);
   for (const line of result.lines) {
     if (line.start == null) continue;
@@ -47,7 +47,7 @@ export function toEnhancedLRC(result, meta = {}) {
   const out = [];
   if (meta.title) out.push(`[ti:${meta.title}]`);
   if (meta.artist) out.push(`[ar:${meta.artist}]`);
-  out.push('[re:suno-lyric-sync]');
+  out.push('[re:lyric-sync]');
   for (const line of result.lines) {
     if (line.type === 'meta') {
       if (line.start != null) out.push(`[${fmt(line.start)}]${line.text}`);
@@ -90,7 +90,7 @@ export function toTTML(result, meta = {}) {
     <metadata>
       <ttm:title>${esc(meta.title ?? '')}</ttm:title>
       <ttm:artist>${esc(meta.artist ?? '')}</ttm:artist>
-      <ttm:tool>suno-lyric-sync</ttm:tool>
+      <ttm:tool>lyric-sync</ttm:tool>
     </metadata>
   </head>
   <body>
