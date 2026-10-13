@@ -89,6 +89,19 @@ const badge = await page.locator('#deviceBadge').textContent();
 console.log(`        実行環境: ${badge}`);
 await page.screenshot({ path: join(shots, '01-initial.png') });
 
+console.log('\n[E2E] 使い方パネル');
+ok(await page.locator('details.usage summary').isVisible(), '「使い方・動作環境」が表示される');
+ok(!(await page.locator('details.usage').evaluate((d) => d.open)), '既定で折りたたまれている');
+await page.locator('details.usage summary').click();
+ok(await page.locator('details.usage').evaluate((d) => d.open), 'クリックで展開できる');
+const usageText = await page.locator('.usage-body').innerText();
+ok(usageText.includes('medium') && usageText.includes('日本語'), '推奨設定（medium＋日本語）が記載されている');
+ok(usageText.includes('RTX 2060 6GB'), '動作確認済み環境が記載されている');
+ok(usageText.includes('ダウンロード') && usageText.includes('6GB 未満'), 'DL容量とGPUメモリを区別している');
+await page.locator('details.usage').scrollIntoViewIfNeeded();
+await page.screenshot({ path: join(shots, '08-usage.png') });
+await page.locator('details.usage summary').click();
+
 console.log('\n[E2E] 音声と歌詞を入力');
 await page.setInputFiles('#audioFile', wav);
 await page.fill('#lyrics', JFK_LYRICS);

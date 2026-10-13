@@ -68,6 +68,36 @@
           WebGPU を使う（無ければ WASM で自動フォールバック）
         </label>
 
+        <details class="usage">
+          <summary>使い方・動作環境</summary>
+          <div class="usage-body">
+            <p class="small">
+              3分の曲を約2分半で処理します（下記環境の実測例）。音声と歌詞はサーバーへ送られず、
+              通信するのはモデルのダウンロード（初回のみ約1.6GB）だけです。
+              実行時にはその重みに加えて GPU メモリも使うため、6GB 未満の GPU では非推奨です。
+            </p>
+            <dl>
+              <dt>日本語楽曲の推奨設定</dt>
+              <dd>モデル <b>medium</b> ＋ 言語「<b>日本語</b>」を明示指定。歌唱音声では言語の自動判定が失敗しやすく、判定漏れで整列率が大きく下がります。</dd>
+              <dt>自動で仕上げられないこと</dt>
+              <dd>
+                同音異字は判別できません。音声を30秒単位で処理するため、長尺曲ではチャンクの境目でずれが出ます。
+                実測例（327語）では13語が未整列で、手動修正が必要でした。
+              </dd>
+              <dt>軽量モデルについて</dt>
+              <dd><code>base</code> / <code>small</code> はチャンク処理と同期精度で問題が出ます。<code>small</code> の整列率は 96% → 86% に下がります。</dd>
+              <dt>整列率が60%を下回る場合</dt>
+              <dd>まず「言語」が「<b>日本語</b>」になっているかを確認してください。</dd>
+              <dt>動作確認済み環境</dt>
+              <dd>Windows 11 / Chrome・Edge / RTX 2060 6GB / RAM 64GB / WebGPU。<br>スマートフォンは非推奨です。</dd>
+            </dl>
+            <p class="small">
+              画面の左に<b>橙色の縦線</b>が付いた行が未整列の箇所です。再生しながら該当の語をクリックすると、
+              その瞬間の再生位置に合わせてくれます。
+            </p>
+          </div>
+        </details>
+
         <div class="row">
           <button id="run" class="primary">同期を実行</button>
           <button id="cancel" class="ghost" disabled>中止</button>
