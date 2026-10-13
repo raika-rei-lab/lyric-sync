@@ -235,6 +235,7 @@ SRT_MAX=14 SRT_MIN=1.2 node scripts/finalize.mjs 曲名.debug.json 歌詞.txt ou
 | [`CHANGELOG.md`](./CHANGELOG.md) | 変更履歴 |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 開発・Pull Request ガイド |
 | [`NOTICE.md`](./NOTICE.md) | サードパーティクレジットとライセンス |
+| [`docs/DECISIONS.md`](./docs/DECISIONS.md) | 開発方針・実測データ・技術的制約・保留中の機能 |
 
 ## ライセンス
 
