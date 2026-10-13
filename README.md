@@ -89,6 +89,20 @@ Whisper が聞き間違えた語は認識側で捨てられ、時刻だけが採
 多言語対応（日 / 韓 / 英 / 中 など）。言語は自動判定より**明示指定のほうが正確**です
 （歌唱音声では自動判定が失敗しやすいため）。
 
+## デモ（GitHub Pages）
+
+https://raika-rei-lab.github.io/lyric-sync/
+
+ブラウザだけで動作し、サーバーも API キーも不要です。初回のみモデルの
+ダウンロード（150〜800MB）に時間がかかります。
+
+ローカルで Pages 相当の挙動を再現する場合:
+
+```bash
+npm run build -- --base=/lyric-sync/
+npm run test:pages    # dist/ を /lyric-sync/ にマウントした静的サーバで実ブラウザ検証
+```
+
 ## 動作環境
 
 | | |
@@ -128,6 +142,7 @@ npm run preview      # ビルド結果の確認
 npm run test:unit        # 整列・書き出しロジック（即時、モデル不要）
 npm run test:e2e         # Playwright でブラウザ実操作（本番ビルドを preview 起動）
 node test/asr-node.mjs   # Node で実際にWhisperを走らせる
+npm run test:pages     # GitHub Pages 相当（/lyric-sync/）での実ブラウザ検証
 node test/exp-align.mjs  # .debug.json fixture で整列アルゴリズムの効果を比較
 node test/diff-models.mjs # 2つの .debug.json（別モデル）を単語レベルで比較
 ```
