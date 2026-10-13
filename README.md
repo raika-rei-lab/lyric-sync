@@ -84,10 +84,16 @@ Whisper が聞き間違えた語は認識側で捨てられ、時刻だけが採
 | `base` | `onnx-community/whisper-base_timestamped` | 約200MB | 約70MB | 最速・検証用 |
 | `small` | `onnx-community/whisper-small_timestamped` | 約560MB | 約240MB | 速さ重視 |
 | `medium` | `onnx-community/whisper-medium_timestamped` | 約1.6GB | 約940MB | **既定（推奨）** |
-| `turbo` | `onnx-community/whisper-large-v3-turbo_timestamped` | 約2.7GB | 約1.0GB | 大容量・**動作未検証** |
+| `turbo` | `onnx-community/whisper-large-v3-turbo_timestamped` | 約2.7GB | 約1.0GB | 大容量・**WebGPU での長時間動作は未検証** |
 
-※ サイズはモデルファイルの実測値に基づく**概算**です。WebGPU では精度を優先して fp32 の
-encoder を読み込むため、WASM（q8）よりも大きくダウンロードされます。
+**ダウンロード量（上表）は実測値**（モデルファイルの実サイズ）です。WebGPU では精度を
+優先して fp32 の encoder を読み込むため、WASM（q8）よりも大きくダウンロードされます。
+
+**GPU メモリ（VRAM）使用量は推定値です。** 実測したものではありません。重みに加えて
+WebGPU では 30 秒チャンクごとに数百 MB が解放されない既知の問題
+（[transformers.js #1739](https://github.com/huggingface/transformers.js/issues/1739)）があり、
+3 分の曲では追加で数 GB 消費すると推定されます。GPU メモリ 6GB 以下の環境では
+`large-v3-turbo` の長時間動作は未検証です（CPU での短い音声では動作確認済み）。
 
 多言語対応（日 / 韓 / 英 / 中 など）。言語は自動判定より**明示指定のほうが正確**です
 （歌唱音声では自動判定が失敗しやすいため）。

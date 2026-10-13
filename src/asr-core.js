@@ -11,7 +11,7 @@ export const MODELS = {
   medium: { id: 'onnx-community/whisper-medium_timestamped', label: 'medium（推奨 / WebGPU 約1.6GB）' },
   turbo: {
     id: 'onnx-community/whisper-large-v3-turbo_timestamped',
-    label: 'large-v3-turbo（WebGPU 約2.7GB / 動作未検証）',
+    label: 'large-v3-turbo（WebGPU 約2.7GB / 長時間動作は未検証）',
   },
 };
 
