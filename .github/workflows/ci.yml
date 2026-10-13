@@ -60,7 +60,7 @@ jobs:
       - name: Playwright の Chromium を取得
         run: npx playwright install --with-deps chromium
 
-      # 初回は Whisper モデル（約150MB）を Hugging Face から取得するため少し時間がかかります
+      # 初回は Whisper モデル（WASM では約70MB / WebGPU なら約200MB）を取得するため時間がかかります
       - name: E2E
         run: npm run test:e2e
 

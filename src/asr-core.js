@@ -6,10 +6,13 @@ import { normalize } from './text.js';
 env.allowLocalModels = false;
 
 export const MODELS = {
-  base: { id: 'onnx-community/whisper-base_timestamped', label: 'base（最速 / 約150MB）' },
-  small: { id: 'onnx-community/whisper-small_timestamped', label: 'small（推奨 / 約250MB）' },
-  medium: { id: 'onnx-community/whisper-medium_timestamped', label: 'medium（推奨 / 約800MB）' },
-  turbo: { id: 'onnx-community/whisper-large-v3-turbo_timestamped', label: 'large-v3-turbo（最良）' },
+  base: { id: 'onnx-community/whisper-base_timestamped', label: 'base（WebGPU 約200MB / WASM 約70MB）' },
+  small: { id: 'onnx-community/whisper-small_timestamped', label: 'small（WebGPU 約560MB / WASM 約240MB）' },
+  medium: { id: 'onnx-community/whisper-medium_timestamped', label: 'medium（推奨 / WebGPU 約1.6GB）' },
+  turbo: {
+    id: 'onnx-community/whisper-large-v3-turbo_timestamped',
+    label: 'large-v3-turbo（WebGPU 約2.7GB / 動作未検証）',
+  },
 };
 
 /** Whisper が受け付けるのは英語名。UI から来る ISO コードを変換する。 */

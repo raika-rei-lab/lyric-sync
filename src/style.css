@@ -153,6 +153,10 @@ label select {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+/* モデル選択は選択肢が長い（サイズ表記を含む）ため全幅にする */
+.grid2 > .wide {
+  grid-column: 1 / -1;
+}
 .row {
   display: flex;
   gap: 8px;

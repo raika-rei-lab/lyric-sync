@@ -1,4 +1,4 @@
-# Suno Lyric Sync
+# Lyric Sync
 
 **ブラウザだけで完結する歌詞同期ツール。** AI 生成音楽（Suno など）の音声と歌詞テキストから
 各単語の再生時刻を推定し、MV 制作で使える字幕・歌詞ファイルを書き出します。
@@ -79,12 +79,15 @@ Whisper が聞き間違えた語は認識側で捨てられ、時刻だけが採
 
 ## 対応モデル
 
-| key | モデル | サイズ | 用途 |
-| --- | --- | --- | --- |
-| `base` | `onnx-community/whisper-base_timestamped` | ~150MB | 最速・検証用 |
-| `small` | `onnx-community/whisper-small_timestamped` | ~250MB | 速さ重視 |
-| `medium` | `onnx-community/whisper-medium_timestamped` | ~800MB | **既定（推奨）** |
-| `turbo` | `onnx-community/whisper-large-v3-turbo_timestamped` | ~700MB〜 | 最良 |
+| key | モデル | 概算DL（WebGPU） | 概算DL（WASM） | 用途 |
+| --- | --- | --- | --- | --- |
+| `base` | `onnx-community/whisper-base_timestamped` | 約200MB | 約70MB | 最速・検証用 |
+| `small` | `onnx-community/whisper-small_timestamped` | 約560MB | 約240MB | 速さ重視 |
+| `medium` | `onnx-community/whisper-medium_timestamped` | 約1.6GB | 約940MB | **既定（推奨）** |
+| `turbo` | `onnx-community/whisper-large-v3-turbo_timestamped` | 約2.7GB | 約1.0GB | 大容量・**動作未検証** |
+
+※ サイズはモデルファイルの実測値に基づく**概算**です。WebGPU では精度を優先して fp32 の
+encoder を読み込むため、WASM（q8）よりも大きくダウンロードされます。
 
 多言語対応（日 / 韓 / 英 / 中 など）。言語は自動判定より**明示指定のほうが正確**です
 （歌唱音声では自動判定が失敗しやすいため）。
@@ -94,7 +97,7 @@ Whisper が聞き間違えた語は認識側で捨てられ、時刻だけが採
 https://raika-rei-lab.github.io/lyric-sync/
 
 ブラウザだけで動作し、サーバーも API キーも不要です。初回のみモデルの
-ダウンロード（150〜800MB）に時間がかかります。
+ダウンロード（WebGPU で約200MB〜2.7GB）に時間がかかります。
 
 ローカルで Pages 相当の挙動を再現する場合:
 

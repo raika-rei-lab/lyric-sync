@@ -3,12 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Suno Lyric Sync — 歌詞自動同期</title>
+    <title>Lyric Sync — 歌詞自動同期</title>
+    <meta
+      name="description"
+      content="Suno などの AI 生成音楽の歌詞を自動同期。ブラウザだけで完結（サーバー・APIキー不要）で、単語レベルの時刻を推定し SRT/LRC/TTML を出力する無料ツール。"
+    />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
     <header>
-      <h1>Suno Lyric Sync</h1>
+      <h1>Lyric Sync</h1>
       <p class="sub">ブラウザ内だけで AI 生成曲の歌詞を自動同期。サーバーも API も不要。</p>
       <span id="deviceBadge" class="badge">実行環境: 判定中…</span>
     </header>
@@ -45,16 +49,20 @@
               <option value="en">English</option>
             </select>
           </label>
-          <label>
+          <label class="wide">
             認識モデル
             <select id="model">
-              <option value="base">base — 最速（約150MB）</option>
-              <option value="small">small — 最速（約250MB）</option>
-              <option value="medium" selected>medium — 推奨（約800MB / 精度が一段上）</option>
-              <option value="turbo">large-v3-turbo — 最良（約700MB〜）</option>
+              <option value="base">base — WebGPU 約200MB / WASM 約70MB（最速・検証用）</option>
+              <option value="small">small — WebGPU 約560MB / WASM 約240MB（速さ重視）</option>
+              <option value="medium" selected>medium — WebGPU 約1.6GB / WASM 約940MB（推奨）</option>
+              <option value="turbo">large-v3-turbo — WebGPU 約2.7GB / WASM 約1.0GB（大容量・動作未検証）</option>
             </select>
           </label>
         </div>
+        <p class="small" style="margin: 6px 0 0">
+          ※ サイズは概算のダウンロード量です。WebGPU では精度を優先して fp32 の encoder を使うため、
+          WASM（q8）より大きくなります。
+        </p>
         <label class="check">
           <input type="checkbox" id="useWebGPU" checked />
           WebGPU を使う（無ければ WASM で自動フォールバック）
